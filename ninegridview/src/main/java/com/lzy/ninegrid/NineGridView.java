@@ -95,7 +95,7 @@ public class NineGridView extends ViewGroup {
         int childrenCount = mImageInfo.size();
         for (int i = 0; i < childrenCount; i++) {
             ImageView childrenView = (ImageView) getChildAt(i);
-            
+
             int rowNum = i / columnCount;
             int columnNum = i % columnCount;
             int left = (gridWidth + gridSpacing) * columnNum + getPaddingLeft();
@@ -103,14 +103,18 @@ public class NineGridView extends ViewGroup {
             int right = left + gridWidth;
             int bottom = top + gridHeight;
             childrenView.layout(left, top, right, bottom);
-            
+
             if (mImageLoader != null) {
-                mImageLoader.onDisplayImage(getContext(), childrenView, mImageInfo.get(i).thumbnailUrl);
+                //如果一张图片，加载等比例缩略图，否则加载矩形缩略图
+                mImageLoader.onDisplayImage(getContext(), childrenView,
+                        childrenCount == 1 ? mImageInfo.get(i).getZoom() : mImageInfo.get(i).getSquare());
             }
         }
     }
 
-    /** 设置适配器 */
+    /**
+     * 设置适配器
+     */
     public void setAdapter(@NonNull NineGridViewAdapter adapter) {
         mAdapter = adapter;
         List<ImageInfo> imageInfo = adapter.getImageInfo();
@@ -148,11 +152,10 @@ public class NineGridView extends ViewGroup {
             }
         } else {
             int oldViewCount = mImageInfo.size();
-            int newViewCount = imageCount;
-            if (oldViewCount > newViewCount) {
-                removeViews(newViewCount, oldViewCount - newViewCount);
-            } else if (oldViewCount < newViewCount) {
-                for (int i = oldViewCount; i < newViewCount; i++) {
+            if (oldViewCount > imageCount) {
+                removeViews(imageCount, oldViewCount - imageCount);
+            } else if (oldViewCount < imageCount) {
+                for (int i = oldViewCount; i < imageCount; i++) {
                     ImageView iv = getImageView(i);
                     if (iv == null) return;
                     addView(iv, generateDefaultLayoutParams());
@@ -168,10 +171,24 @@ public class NineGridView extends ViewGroup {
             }
         }
         mImageInfo = imageInfo;
+
+        //如果只有一张图片时，根据图片设置宽高比
+        if (mImageInfo.size() == 1) {
+            ImageInfo info = mImageInfo.get(0);
+            if (info.getWidth() != 0 && info.getHeight() != 0) {
+                singleImageRatio = info.getWidth() / (float) info.getHeight();
+            } else {
+                singleImageRatio = 1f;
+            }
+        } else {
+            singleImageRatio = 1f;
+        }
         requestLayout();
     }
 
-    /** 获得 ImageView 保证了 ImageView 的重用 */
+    /**
+     * 获得 ImageView 保证了 ImageView 的重用
+     */
     private ImageView getImageView(final int position) {
         ImageView imageView;
         if (position < imageViews.size()) {
@@ -189,22 +206,30 @@ public class NineGridView extends ViewGroup {
         return imageView;
     }
 
-    /** 设置宫格间距 */
+    /**
+     * 设置宫格间距
+     */
     public void setGridSpacing(int spacing) {
         gridSpacing = spacing;
     }
 
-    /** 设置只有一张图片时的宽 */
+    /**
+     * 设置只有一张图片时的宽
+     */
     public void setSingleImageSize(int maxImageSize) {
         singleImageSize = maxImageSize;
     }
 
-    /** 设置只有一张图片时的宽高比 */
+    /**
+     * 设置只有一张图片时的宽高比
+     */
     public void setSingleImageRatio(float ratio) {
         singleImageRatio = ratio;
     }
 
-    /** 设置最大图片数 */
+    /**
+     * 设置最大图片数
+     */
     public void setMaxSize(int maxSize) {
         maxImageSize = maxSize;
     }

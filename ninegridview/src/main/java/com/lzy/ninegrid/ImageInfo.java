@@ -1,81 +1,67 @@
 package com.lzy.ninegrid;
 
-import java.io.Serializable;
-
 /**
- * ================================================
- * 作    者：廖子尧
- * 版    本：1.0
- * 创建日期：2016/3/21
- * 描    述：
- * 修订历史：
- * ================================================
+ *
  */
-public class ImageInfo implements Serializable {
-    public String thumbnailUrl;
-    public String bigImageUrl;
-    public int imageViewHeight;
-    public int imageViewWidth;
-    public int imageViewX;
-    public int imageViewY;
+public class ImageInfo {
+    /**
+     * 等比例缩略图URL
+     */
+    protected String zoom;
+    /**
+     * 矩形缩略图URL
+     */
+    protected String square;
+    /**
+     * 原图URL
+     */
+    protected String url;
+    /**
+     * 原图的宽度
+     */
+    protected int width;
+    /**
+     * 原图的高度
+     */
+    protected int height;
 
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
+    public String getZoom() {
+        return zoom;
     }
 
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
+    public void setZoom(String zoom) {
+        this.zoom = zoom;
     }
 
-    public String getBigImageUrl() {
-        return bigImageUrl;
+    public String getSquare() {
+        return square;
     }
 
-    public void setBigImageUrl(String bigImageUrl) {
-        this.bigImageUrl = bigImageUrl;
+    public void setSquare(String square) {
+        this.square = square;
     }
 
-    public int getImageViewHeight() {
-        return imageViewHeight;
+    public String getUrl() {
+        return url;
     }
 
-    public void setImageViewHeight(int imageViewHeight) {
-        this.imageViewHeight = imageViewHeight;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public int getImageViewWidth() {
-        return imageViewWidth;
+    public int getWidth() {
+        return width;
     }
 
-    public void setImageViewWidth(int imageViewWidth) {
-        this.imageViewWidth = imageViewWidth;
+    public void setWidth(int width) {
+        this.width = width;
     }
 
-    public int getImageViewX() {
-        return imageViewX;
+    public int getHeight() {
+        return height;
     }
 
-    public void setImageViewX(int imageViewX) {
-        this.imageViewX = imageViewX;
-    }
-
-    public int getImageViewY() {
-        return imageViewY;
-    }
-
-    public void setImageViewY(int imageViewY) {
-        this.imageViewY = imageViewY;
-    }
-
-    @Override
-    public String toString() {
-        return "ImageInfo{" +
-                "imageViewY=" + imageViewY +
-                ", imageViewX=" + imageViewX +
-                ", imageViewWidth=" + imageViewWidth +
-                ", imageViewHeight=" + imageViewHeight +
-                ", bigImageUrl='" + bigImageUrl + '\'' +
-                ", thumbnailUrl='" + thumbnailUrl + '\'' +
-                '}';
+    public void setHeight(int height) {
+        this.height = height;
     }
 }
